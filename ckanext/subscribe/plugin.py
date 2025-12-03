@@ -4,9 +4,11 @@ import ckan.plugins.toolkit as tk
 import ckanext.subscribe.helpers as subscribe_helpers
 from ckanext.subscribe import action, auth
 from ckanext.subscribe.blueprints import subscribe_blueprint
+from ckanext.subscribe.cli import subscribe
 from ckanext.subscribe.interfaces import ISubscribe
 
 
+@tk.blanket.config_declarations
 class SubscribePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IActions)
@@ -14,6 +16,7 @@ class SubscribePlugin(plugins.SingletonPlugin):
     plugins.implements(ISubscribe, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.IBlueprint, inherit=True)
+    plugins.implements(plugins.IClick)
 
     # IConfigurer
 
@@ -63,3 +66,7 @@ class SubscribePlugin(plugins.SingletonPlugin):
     # IBlueprint
     def get_blueprint(self):
         return [subscribe_blueprint]
+
+    # IClick
+    def get_commands(self):
+        return [subscribe]

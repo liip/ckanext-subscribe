@@ -33,7 +33,10 @@ def get_config(key):
             "sunday": 6,
         }[toolkit.config.get("ckanext.subscribe.weekly_notification_day", "friday")]
         _config["daily_and_weekly_notification_time"] = datetime.datetime.strptime(
-            toolkit.config.get("daily_and_weekly_notification_time", "9:00"), "%H:%M"
+            toolkit.config.get(
+                "ckanext.subscribe.daily_and_weekly_notification_time", "9:00"
+            ),
+            "%H:%M",
         )
 
     return _config[key]

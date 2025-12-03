@@ -49,10 +49,10 @@ Compatibility with core CKAN versions:
 =============== =============
 CKAN version    Compatibility
 =============== =============
-2.6 and earlier no
-2.7             yes
-2.8             yes
-2.9             not yet
+2.9 and earlier no
+2.10            yes
+2.11            yes
+2.12            not yet
 =============== =============
 
 ------------
@@ -114,7 +114,7 @@ To install ckanext-subscribe:
 
 7. Initialize the subscribe tables in the database::
 
-     paster --plugin=ckanext-subscribe subscribe initdb
+     ckan db upgrade -p subscribe
 
 8. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu::
 
@@ -123,7 +123,7 @@ To install ckanext-subscribe:
 9. You need to run the 'send-any-notifications' command regularly. You can see
    it running on the command-line::
 
-     paster --plugin=ckanext-subscribe subscribe send-any-notifications -c /etc/ckan/default/production.ini
+     ckan subscribe send-any-notifications
 
    However instead you'll probably want a cron job setup to run it every minute
    or so. We're going to edit the cron table. On a development machine, just do
@@ -131,16 +131,16 @@ To install ckanext-subscribe:
 
      crontab -e
 
-   Or a production machine use the 'ckan' user, instead of checking for notifications on the
+   Or a production machine use the 'ckan' user. Instead of checking for notifications on the
    command-line, create CRON job. To do so, edit the cron table with the
    following command (it may ask you to choose an editor)::
 
      sudo crontab -e -u ckan
 
-   Paste this line into your crontab, again replacing the paths to paster and the ini file with yours::
+   Paste this line into your crontab, replacing the paths to ckan and the ini file with yours::
 
      # m h  dom mon dow   command
-       * *  *   *   *     /usr/lib/ckan/default/bin/paster --plugin=ckanext-subscribe subscribe send-any-notifications --config=/etc/ckan/default/production.ini
+       * *  *   *   *     /usr/bin/ckan -c /srv/app/ckan.ini subscribe send-any-notifications
 
    This particular example will check for notifications every minute.
 
@@ -156,6 +156,7 @@ Config settings
 
 ::
 
+  # A CKAN config setting that also affects the behaviour of this extension.
   # Email notifications older than this time period will not be sent.
   # So, after a pause in the sending of emails, when it restarts, it will not
   # notify about activity which is:
@@ -189,6 +190,8 @@ Config settings
 
    ckanext.subscribe.apply_recaptcha = false
 
+See also `ckanext/subscribe/config_declaration.yaml`.
+
 
 ---------------
 Troubleshooting
@@ -202,15 +205,15 @@ Troubleshooting
 
    You should see messages every minute::
 
-     Jan 10 15:24:01 ip-172-30-3-71 CRON[29231]: (ubuntu) CMD (/usr/lib/ckan/default/bin/paster --plugin=ckanext-subscribe subscribe run --config=/etc/ckan/default/production.ini)
+     Jan 10 15:24:01 ip-172-30-3-71 CRON[29231]: (ubuntu) CMD (/usr/bin/ckan -c /srv/app/ckan.ini subscribe send-any-notifications)
 
 2. Create a test activity for a dataset/group/org you are subscribed to::
 
-     paster --plugin=ckanext-subscribe subscribe create-test-activity mydataset --config=/etc/ckan/default/production.ini
+     /usr/bin/ckan -c /srv/app/ckan.ini subscribe create-test-activity mydataset
 
    The log of the cron-activated paster command itself is not currently stored anywhere, so it's best to test it on the commandline::
 
-     paster --plugin=ckanext-subscribe subscribe send-any-notifications --config=/etc/ckan/default/production.ini
+     /usr/bin/ckan -c /srv/app/ckan.ini subscribe send-any-notifications
 
    You should see emails being sent to subscribers of that dataset::
 
@@ -220,7 +223,7 @@ Troubleshooting
 
 3. Clean up all test activity afterwards::
 
-     paster --plugin=ckanext-subscribe subscribe delete-test-activity --config=/etc/ckan/default/production.ini
+     /usr/bin/ckan -c /srv/app/ckan.ini subscribe delete-test-activity
 
 
 **NameError: global name 'Subscription' is not defined**
@@ -233,21 +236,6 @@ You need to initialize the subscribe tables in the database.  See
 
 You need to enable the `subscribe` plugin in your CKAN config. See
 'Installation' section above to do this.
-
-
-**ProgrammingError: (ProgrammingError) relation "subscription" does not exist**
-
-You're running the tests with `--reset-db` and this extension doesn't work with
-that. Instead, if you need to wipe the tables before running tests, do it this
-way::
-
-    sudo -u postgres psql ckan_test -c 'drop table if exists subscription; drop table if exists subscribe_login_code; drop table if exists subscribe;'
-
-or simply::
-
-    sudo -u postgres dropdb ckan_test
-    sudo -u postgres createdb -O ckan_default ckan_test -E utf-8
-    paster --plugin=ckan db init -c ../ckan/test-core.ini
 
 
 ----------------------
@@ -271,12 +259,12 @@ Tests
 
 To run the tests, do::
 
-    nosetests --nologcapture --with-pylons=test.ini
+    pytest --ckan-ini=test.ini --disable-warnings ckanext/subscribe/tests
 
 To run the tests and produce a coverage report, first make sure you have
 coverage installed in your virtualenv (``pip install coverage``) then run::
 
-    nosetests --nologcapture --with-pylons=test.ini --with-coverage --cover-package=ckanext.subscribe --cover-inclusive --cover-erase --cover-tests
+    pytest --ckan-ini=test.ini --cov=ckanext.subscribe --cov-report=term-missing --cov-append --disable-warnings ckanext/subscribe/tests
 
 
 --------------------------------------------

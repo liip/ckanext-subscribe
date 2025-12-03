@@ -1,0 +1,36 @@
+version: 1
+
+groups:
+  - annotation: "SubscribePlugin settings: notifications"
+    options:
+      - key: ckanext.subscribe.daily_and_weekly_notification_time
+        default: "09:00"
+        description: "The time that daily and weekly notification subscriptions are sent (UTC timezone). Format: %H:%M"
+        required: false
+      - key: ckanext.subscribe.weekly_notification_day
+        default: friday
+        description: The day of the week that weekly notification subscriptions are sent
+        required: false
+
+  - annotation: "SubscribePlugin settings: reCAPTCHA"
+    options:
+      - key: ckanext.subscribe.recaptcha.privatekey
+        default: ""
+        description: |
+          The private key for your domain from https://www.google.com/recaptcha
+        required: false
+      - key: ckanext.subscribe.recaptcha.publickey
+        default: ""
+        description: |
+          The public key for your domain from https://www.google.com/recaptcha
+        required: false
+      - key: ckanext.subscribe.recaptcha.api_url
+        default: ""
+        description: |
+          The API URL for your domain from https://www.google.com/recaptcha
+        required: false
+      - key: ckanext.subscribe.apply_recaptcha
+        default: false
+        type: bool
+        description: Whether to apply reCAPTCHA to the dataset subscription form
+        required: false

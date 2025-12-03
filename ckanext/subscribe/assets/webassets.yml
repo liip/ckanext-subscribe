@@ -1,4 +1,4 @@
-subscribe/css/subscribe:
-  output: subscribe/css/subscribe.css
+subscribe-css:
+  output: subscribe/subscribe.css
   contents:
     - css/subscribe.css

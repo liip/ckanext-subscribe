@@ -4,7 +4,6 @@ import string
 
 import ckan.plugins as p
 from ckan import model
-from six import text_type
 
 from ckanext.subscribe import mailer
 from ckanext.subscribe.interfaces import ISubscribe
@@ -73,7 +72,7 @@ def get_verification_email_vars(subscription):
 
 
 def create_code(subscription):
-    subscription.verification_code = text_type(make_code())
+    subscription.verification_code = str(make_code())
     subscription.verification_code_expires = datetime.datetime.now() + CODE_EXPIRY
     model.repo.commit_and_remove()
 

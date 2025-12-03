@@ -22,7 +22,6 @@ import string
 
 import ckan.plugins as p
 from ckan import model
-from six import text_type
 
 from ckanext.subscribe import mailer
 from ckanext.subscribe.interfaces import ISubscribe
@@ -117,7 +116,7 @@ def send_manage_email(code, subscription=None, email=None):
 def create_code(email):
     if p.toolkit.check_ckan_version(max_version="2.8.99"):
         model.repo.new_revision()
-    code = text_type(make_code())
+    code = str(make_code())
     model.Session.add(
         LoginCode(
             email=email,
