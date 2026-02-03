@@ -32,9 +32,7 @@ def get_footer_contents(email_vars, subscription=None):
     if subscription:
         plain_text_footer += """
 You can unsubscribe from notifications emails for {object_type}: "{object_title}" by going to {unsubscribe_link}.
-""".format(
-            **email_vars
-        )
+""".format(**email_vars)
     else:
         plain_text_footer += (
             "To stop receiving all subscription emails from {site_title}: "
@@ -43,9 +41,7 @@ You can unsubscribe from notifications emails for {object_type}: "{object_title}
         ).format(**email_vars)
     plain_text_footer += """
 Manage your settings at {manage_link}.
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     return plain_text_footer, html_footer
 
 
@@ -121,9 +117,7 @@ def get_manage_email_contents(email_vars):
 
 --
 {html_footer}
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     plain_text_body = """
 {site_title} subscription requested:
 
@@ -132,9 +126,7 @@ def get_manage_email_contents(email_vars):
 
 --
 {plain_text_footer}
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     return subject, plain_text_body, html_body
 
 
@@ -152,9 +144,7 @@ def get_subscription_confirmation_email_contents(email_vars):
 
 --
 {html_footer}
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     plain_text_body = """
 You have subscribed to notifications about:
 {object_type}: {object_title} ({object_name})
@@ -165,9 +155,7 @@ To manage subscriptions for {email}, click this link:
 
 --
 {plain_text_footer}
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     return subject, plain_text_body, html_body
 
 
@@ -176,8 +164,7 @@ def get_notification_email_contents(email_vars):
     # Make sure subject is only one line
     subject = subject.split("\n")[0]
 
-    html_body = Template(
-        """
+    html_body = Template("""
 <p>Changes have occurred in relation to your subscription(s)</p>
 
 {% for notification in notifications %}
@@ -197,10 +184,8 @@ def get_notification_email_contents(email_vars):
 
 --
 {{ html_footer }}
-"""
-    ).render(**email_vars)
-    plain_text_body = Template(
-        """
+""").render(**email_vars)
+    plain_text_body = Template("""
 Changes have occurred in relation to your subscription(s)
 
 {% for notification in notifications %}
@@ -215,8 +200,7 @@ Changes have occurred in relation to your subscription(s)
 
 --
 {{ plain_text_footer }}
-"""
-    ).render(**email_vars)
+""").render(**email_vars)
     return subject, plain_text_body, html_body
 
 
@@ -234,9 +218,7 @@ def get_verification_email_contents(email_vars):
 
 --
 {html_footer}
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     plain_text_body = """
 {site_title} subscription requested:
 {object_type}: {object_title} ({object_name})
@@ -246,9 +228,7 @@ To confirm this email subscription, click this link:
 
 --
 {plain_text_footer}
-""".format(
-        **email_vars
-    )
+""".format(**email_vars)
     return subject, plain_text_body, html_body
 
 

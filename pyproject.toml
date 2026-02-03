@@ -1,2 +1,46 @@
+[project]
+name = "ckanext-subscribe"
+version = "1.1.0"
+dynamic = ["dependencies", "optional-dependencies"]
+description = "CKAN extension that allows users to subscribe to updates WITHOUT requiring login"
+authors = [
+    {name = "David Read", email = "david.read@hackneyworkshop.com"}
+]
+maintainers = [
+    {name = "Liip AG", email = "ogdch@liip.ch"}
+]
+license = {text = "AGPL"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+keywords = [
+    "CKAN",
+    "email",
+    "subscription",
+    "notifications",
+]
+
+[project.urls]
+Documentation = "https://github.com/opendata-swiss/ckanext-subscribe"
+Repository = "https://github.com/opendata-swiss/ckanext-subscribe"
+Issues = "https://github.com/opendata-swiss/ckanext-subscribe/issues"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {dev = { file = ["dev-requirements.txt"] }}
+
 [tool.isort]
 profile = "black"
+
+[project.entry-points."ckan.plugins"]
+subscribe = "ckanext.subscribe.plugin:SubscribePlugin"

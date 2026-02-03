@@ -247,8 +247,7 @@ do::
 
     git clone https://github.com/bellisk/ckanext-subscribe.git
     cd ckanext-subscribe
-    python setup.py develop
-    pip install -r dev-requirements.txt
+    pip install -e .[dev]
 
 Now continue Installation steps from step 3
 

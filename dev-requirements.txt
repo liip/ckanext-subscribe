@@ -1,2 +1,4 @@
+black
 coveralls  # for reporting test coverage to coveralls.io in .github/workflows/test.yml
+isort
 mock
