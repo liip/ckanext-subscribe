@@ -27,9 +27,9 @@ keywords = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/opendata-swiss/ckanext-subscribe"
-Repository = "https://github.com/opendata-swiss/ckanext-subscribe"
-Issues = "https://github.com/opendata-swiss/ckanext-subscribe/issues"
+Documentation = "https://github.com/liip/ckanext-subscribe"
+Repository = "https://github.com/liip/ckanext-subscribe"
+Issues = "https://github.com/liip/ckanext-subscribe/issues"
 
 [build-system]
 requires = ["setuptools>=64"]
